@@ -76,7 +76,8 @@ const CardItems = (props) => {
         <Card.Text as="h6">Category:{category.slice(1, 2)}</Card.Text>
         <Card.Text style={{ font: "0.8rem" }}>
           {/* Released on:{finalDAte} */}
-          Released on: 11/02/2022
+          Released on:{new Date(date).toString().slice(4, 15)}
+          {/* Released on: 11/02/2022 */}
         </Card.Text>
       </Card.Body>
       <button
