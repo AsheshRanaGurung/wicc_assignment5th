@@ -1,47 +1,42 @@
 import React, { useState } from "react";
-import { Navbar, Nav, Container, Row, Col } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { Navbar, Nav, Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import AccountCircleRoundedIcon from "@material-ui/icons/AccountCircleRounded";
 import Modal from "react-bootstrap/Modal";
-import ModalItem from "./ModalItem/ModalItem";
+import ModalItem from "./ModalItem";
+import { cartDelete } from "../redux/actions/fetchdata";
 
 const Header = (props) => {
-  const { cartlen, setCartlen, cartItems, setCartItems } = props;
-
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const dispatch = useDispatch();
 
-  const deletelist = (id) => {
-    console.log(id);
+  const cartItems = useSelector((state) => state.updateCart.cartItems);
 
-    const filteryy = cartItems.filter((item) => {
-      console.log(item.id);
-      if (id !== item) {
-        return item;
-      }
-    });
-    setCartItems(filteryy);
-    setCartlen(cartlen - 1);
-    console.log(filteryy);
+  const deletelist = (item) => {
+    dispatch(cartDelete(item));
   };
-
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
         <Navbar.Brand>
-          <img
-            style={{ height: "2rem", width: "auto" }}
-            src="https://infodev.com.np/static/media/logonew.920b2087.svg"
-            alt="logo"
-          />
+          <Link style={{ textDecoration: "none" }} to="/">
+            <img
+              style={{ height: "2rem", width: "auto" }}
+              src="https://infodev.com.np/static/media/logonew.920b2087.svg"
+              alt="logo"
+            />{" "}
+          </Link>
         </Navbar.Brand>
         <Nav className="ml-auto">
           <Nav.Link>Home</Nav.Link>
           <Nav.Link>
             <ShoppingCartIcon onClick={handleShow} />
-            {cartlen}
+            {cartItems.length}
           </Nav.Link>
           <Nav.Link>
             <AccountCircleRoundedIcon />
@@ -54,7 +49,6 @@ const Header = (props) => {
           {cartItems.map((item) => (
             <Modal.Body>
               <ModalItem
-                id={item.id}
                 image={item.image}
                 name={item.name}
                 price={item.price}
@@ -71,13 +65,15 @@ const Header = (props) => {
                 (acc, item) => acc + item.qty * Number(item.price) * 120,
                 0
               )}
-              <button
-                className="filterprimary"
-                disabled={cartItems.length === 0}
-                // onClick={click}
-              >
-                Checkout
-              </button>
+              <Link style={{ textDecoration: "none" }} to="/formik">
+                <button
+                  className="filterprimary"
+                  disabled={cartItems.length === 0}
+                  onClick={handleClose}
+                >
+                  Checkout
+                </button>{" "}
+              </Link>
             </div>
           </Modal.Footer>
         </Modal>

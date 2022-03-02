@@ -1,20 +1,16 @@
-import React, { useEffect, useState } from "react";
-import ProductCard from "./body/ProductCard";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import ProductCard from "../body/ProductCard";
 import { Container } from "react-bootstrap";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import SearchIcon from "@material-ui/icons/Search";
+// import { filteredData } from "../redux/actions/fetchdata";
 
 function DataList(props) {
-  const {
-    cartlen,
-    setCartlen,
-    cartItems,
-    setCartItems,
-    loader,
-    products,
-    setProducts,
-  } = props;
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.fetch.products);
 
+  const [displayproducts, setDisplayproducts] = useState(products);
   const [show, setShow] = useState(false);
   const [minprice, setMinprice] = useState(0);
   const [maxprice, setMaxprice] = useState();
@@ -24,6 +20,8 @@ function DataList(props) {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  // const filteredProducts = useSelector((state) => state.filteredData.products);
 
   const categorylist = () => {
     let categories = [
@@ -38,13 +36,10 @@ function DataList(props) {
         return item;
       }
     });
-    // console.log(filterey);
-    setProducts(filterey);
+    console.log(displayproducts);
+    // dispatch(filteredData(filterey));
+    setDisplayproducts(filterey);
   };
-
-  // useEffect(() => {
-  //   setFilteredData(products);
-  // }, []);
 
   return (
     <Container className="pt-3">
@@ -95,6 +90,7 @@ function DataList(props) {
               <select id="type">
                 {categorylist().map((element) => (
                   <option
+                    key={element}
                     value={element}
                     onChange={(e) => setCategory(e.target.value)}
                   >
@@ -114,33 +110,9 @@ function DataList(props) {
         </Offcanvas>
       </div>
 
-      <ProductCard
-        products={products}
-        loader={loader}
-        cartValue={cartlen}
-        setCartValue={setCartlen}
-        cartItems={cartItems}
-        setCartItems={setCartItems}
-      />
+      <ProductCard products={products} />
     </Container>
   );
 }
 
 export default DataList;
-
-// {products.map((item) => {
-//   <ProductCard
-//     id={item._id}
-//     image={item.image}
-//     stock={item.stock}
-//     name={item.name}
-//     price={item.price}
-//     category={item.category}
-//     date={item.createDate}
-//     loader={loader}
-//     cartValue={cartlen}
-//     setCartValue={setCartlen}
-//     cartItems={cartItems}
-//     setCartItems={setCartItems}
-//   />;
-// })}

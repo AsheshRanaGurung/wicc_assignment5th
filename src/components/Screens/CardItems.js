@@ -1,29 +1,20 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Card } from "react-bootstrap";
-import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+import { cartUpdate, GetThisProduct } from "../../redux/actions/fetchdata";
+
 const CardItems = (props) => {
-  const {
-    id,
-    image,
-    stock,
-    name,
-    price,
-    category,
-    date,
-    setCartValue,
-    cartValue,
-    setCartItems,
-    cartItems,
-  } = props;
+  const { id, image, stock, name, price, category, date } = props;
   const [itemnum, setItemnum] = useState(1);
+  const dispatch = useDispatch();
+
   const decNum = () => {
     {
       itemnum === 1 ? setItemnum(1) : setItemnum(itemnum - 1);
     }
   };
   const incNum = (id, stock) => {
-    console.log(id);
-
     if (itemnum < stock) {
       setItemnum(itemnum + 1);
     } else if (itemnum === stock || itemnum > stock) {
@@ -31,28 +22,27 @@ const CardItems = (props) => {
     }
   };
   const addcartItem = (name, image, stock, price, qty) => {
-    toast("Item added successfully");
-
-    setCartValue(cartValue + 1);
-
-    setCartItems([
-      ...cartItems,
-      { name: name, image: image, stock: stock, price: price, qty: qty },
-    ]);
-    console.log(stock, qty);
+    dispatch(cartUpdate(name, image, stock, price, qty));
   };
-
-  // let month = Date(date).getMonth() + 1;
-  // let year = Date(date).getFullYear();
-  // let day = Date(date).getDate();
-  // const finalDAte = `${day}/${month}/${year}`;
+  const sendProductId = (id, image, stock, qty, name, price, category) => {
+    dispatch(GetThisProduct(id, image, stock, qty, name, price, category));
+  };
 
   return (
     <Card className="merocard my-3 p-3 rounded">
-      <Card.Img
-        style={{ height: "10rem", width: "100%" }}
-        src={`https://electronic-ecommerce.herokuapp.com/${image}`}
-      />
+      <Link
+        style={{ textDecoration: "none" }}
+        to={`/product/${id}`}
+        onClick={() =>
+          sendProductId(id, image, stock, itemnum, name, price, category)
+        }
+      >
+        <Card.Img
+          style={{ height: "10rem", width: "100%" }}
+          src={`https://electronic-ecommerce.herokuapp.com/${image}`}
+        />
+      </Link>
+
       <Card.Body>
         <div className="itemSetter">
           <button className="itemsetter-btn" onClick={decNum}>
@@ -75,9 +65,7 @@ const CardItems = (props) => {
         </div>
         <Card.Text as="h6">Category:{category.slice(1, 2)}</Card.Text>
         <Card.Text style={{ font: "0.8rem" }}>
-          {/* Released on:{finalDAte} */}
           Released on:{new Date(date).toString().slice(4, 15)}
-          {/* Released on: 11/02/2022 */}
         </Card.Text>
       </Card.Body>
       <button
