@@ -5,6 +5,8 @@ import {
   CART_ITEM_DELETE,
   FETCHING_ID_DATA,
   FETCHING_ID_DATA_SUCCESS,
+  FILTERED_DATA_REQUEST,
+  FILTERED_DATA_SUCCESS,
 } from "../constants/fetchConstants";
 
 export const fetchdataReducer = (
@@ -45,21 +47,24 @@ export const GetThisProductReducer = (
   }
 };
 
-// export const filtereddataReducer = (state = {}, action) => {
-//   switch (action.type) {
-//     case FILTERED_DATA_REQUEST:
-//       return {
-//         ...state,
-//       };
-//     case FILTERED_DATA_SUCCESS:
-//       return {
-//         ...state,
-//         products: action.payload,
-//       };
-//     default:
-//       return state;
-//   }
-// };
+export const filtereddataReducer = (
+  state = { filteredproducts: [] },
+  action
+) => {
+  switch (action.type) {
+    case FILTERED_DATA_REQUEST:
+      return {
+        ...state,
+      };
+    case FILTERED_DATA_SUCCESS:
+      return {
+        ...state,
+        filteredproducts: action.payload,
+      };
+    default:
+      return state;
+  }
+};
 
 export const updateCartReducer = (state = { cartItems: [] }, action) => {
   switch (action.type) {

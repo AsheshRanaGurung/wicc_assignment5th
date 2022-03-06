@@ -2,26 +2,32 @@ import axios from "axios";
 import {
   FETCHING_DATA,
   FETCH_SUCCESS,
+  FETCH_FAIL,
   ADD_TO_CART_SUCCESS,
   CART_ITEM_DELETE,
   FETCHING_ID_DATA,
   FETCHING_ID_DATA_SUCCESS,
+  FILTERED_DATA_REQUEST,
+  FILTERED_DATA_SUCCESS,
 } from "../constants/fetchConstants";
 import { toast } from "react-toastify";
 
 export const fetchData = () => async (dispatch) => {
-  dispatch({
-    type: FETCHING_DATA,
-  });
-  const response = await axios.get(
-    "https://electronic-ecommerce.herokuapp.com/api/v1/product"
-  );
-  dispatch({
-    type: FETCH_SUCCESS,
-    payload: response.data.data.product,
-  });
+  try {
+    dispatch({
+      type: FETCHING_DATA,
+    });
+    const response = await axios.get(
+      "https://electronic-ecommerce.herokuapp.com/api/v1/product"
+    );
+    dispatch({
+      type: FETCH_SUCCESS,
+      payload: response.data.data.product,
+    });
+  } catch (error) {
+    dispatch({ type: FETCH_FAIL });
+  }
 };
-
 export const GetThisProduct =
   (id, image, stock, qty, name, price, category) => async (dispatch) => {
     dispatch({
@@ -42,16 +48,16 @@ export const GetThisProduct =
     });
   };
 
-// export const filteredData = (filterey) => async (dispatch) => {
-//   dispatch({
-//     type: FILTERED_DATA_REQUEST,
-//   });
+export const filteredData = (filterey) => async (dispatch) => {
+  dispatch({
+    type: FILTERED_DATA_REQUEST,
+  });
 
-//   dispatch({
-//     type: FILTERED_DATA_SUCCESS,
-//     payload: filterey,
-//   });
-// };
+  dispatch({
+    type: FILTERED_DATA_SUCCESS,
+    payload: filterey,
+  });
+};
 
 export const cartUpdate =
   (name, image, stock, price, qty) => async (dispatch) => {
@@ -74,3 +80,20 @@ export const cartDelete = (item) => async (dispatch) => {
     payload: item,
   });
 };
+
+// export const filterdata =
+//   (minprice, maxprice, date, category) => async (dispatch) => {
+//     dispatch({
+//       type: FILTERED_DATA_REQUEST,
+//     });
+
+//     dispatch({
+//       type: FILTERED_DATA_SUCCESS,
+//       payload: {
+//         minprice: minprice,
+//         maxprice: maxprice,
+//         date: date,
+//         category: category,
+//       },
+//     });
+//   };
