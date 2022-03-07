@@ -6,6 +6,7 @@ import { cartUpdate, GetThisProduct } from "../../redux/actions/fetchdata";
 
 const CardItems = (props) => {
   const { id, image, stock, name, price, category, date } = props;
+
   const [itemnum, setItemnum] = useState(1);
   const dispatch = useDispatch();
 

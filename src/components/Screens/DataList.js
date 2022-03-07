@@ -5,12 +5,17 @@ import { Container } from "react-bootstrap";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import SearchIcon from "@material-ui/icons/Search";
 import { filteredData } from "../../redux/actions/fetchdata";
+import useFetchAPIdata from "../CustomHook/useFetchAPIdata";
 
 function DataList(props) {
   const dispatch = useDispatch();
-  const products = useSelector((state) => state.fetch.products);
-  const filteredproducts = useSelector(
-    (state) => state.filtereddata.filteredproducts
+  // const products = useSelector((state) => state.fetch.products);
+
+  //tried custom hook to fetch data instead of redux ko action
+  //redux bata ni chalxa if you un comment line 12.
+
+  const products = useFetchAPIdata(
+    "https://electronic-ecommerce.herokuapp.com/api/v1/product"
   );
 
   const [displayproducts, setDisplayproducts] = useState();
@@ -25,19 +30,18 @@ function DataList(props) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  // const filteredProducts = useSelector((state) => state.filteredData.products);
-
   let categories = [...new Map(products.map((item) => item.category.slice(1)))];
 
   const handleFilter = (minprice, maxprice, date, category) => {
     const filterey = products.filter((item) => {
-      // if (minprice !== "" && maxprice !== "" && category == "") {
-      // if (Number(item.price.substring(1, 6) * 120) > minprice) {
-      //   return item;
-      // }
+      if (minprice !== "" && maxprice !== "" && category == "") {
+        if (Number(item.price.substring(1, 6) * 120) > minprice) {
+          return item;
+        }
+      }
       if (category == item.category.slice(1)) {
         return item;
-        // }
+        // category name ra array vitra ko item name same garna
       }
     });
     console.log(category);
@@ -46,29 +50,6 @@ function DataList(props) {
     dispatch(filteredData(filterey));
     setDisplayproducts(filterey);
   };
-
-  // const handleFilter = (minprice, maxprice, date, category) => {
-  //   let filteredProduct;
-
-  //   if (category !== "") {
-  //     if (category !== null && minprice !== "" && maxprice !== "") {
-  //       filteredProduct = products.filter((product) => {
-  //         let newPrice = product.price.slice(1, product.price.length);
-  //         let nepaliPrice = Number(newPrice) * 119;
-  //         return (
-  //           (nepaliPrice >= minprice && nepaliPrice) <= maxprice &&
-  //           product.category[1] === category
-  //         );
-  //       });
-  //     } else if (category) {
-  //       filteredProduct = products.filter((product) => {
-  //         return product.category[1] === category;
-  //       });
-  //     }
-
-  //     setDisplayproducts(filteredProduct);
-  //   }
-  // };
 
   return (
     <Container className="pt-3">
@@ -115,7 +96,6 @@ function DataList(props) {
             <div>
               Category
               <br />
-              {/* <Category list={categorylist()} element={element} /> */}
               <select
                 id="type"
                 onChange={(e) => setCategory(e.target.value.slice(0, -1))}

@@ -80,20 +80,3 @@ export const cartDelete = (item) => async (dispatch) => {
     payload: item,
   });
 };
-
-// export const filterdata =
-//   (minprice, maxprice, date, category) => async (dispatch) => {
-//     dispatch({
-//       type: FILTERED_DATA_REQUEST,
-//     });
-
-//     dispatch({
-//       type: FILTERED_DATA_SUCCESS,
-//       payload: {
-//         minprice: minprice,
-//         maxprice: maxprice,
-//         date: date,
-//         category: category,
-//       },
-//     });
-//   };
