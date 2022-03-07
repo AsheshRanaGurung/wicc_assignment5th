@@ -108,6 +108,10 @@ p {
   display: flex;
   flex-direction: column;
 }
+.merocard:hover {
+  box-shadow: 3px 4px 15px lightblue;
+  transition: all 0.8s ease;
+}
 // .header .header-image {
 //   width: 10rem;
 //   margin: auto;
