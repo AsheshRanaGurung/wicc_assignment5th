@@ -5,14 +5,16 @@ import { Link } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import StarRating from "react-bootstrap-star-rating";
 import { cartUpdate } from "../../redux/actions/fetchdata";
+import { toast } from "react-toastify";
 
 function ProductDetail() {
   const [qty, setQty] = useState(1);
   const GetThisProduct = useSelector((state) => state.GetThisProduct.product);
   const dispatch = useDispatch();
 
-  const addcartItem = (name, image, stock, price, qty) => {
-    dispatch(cartUpdate(name, image, stock, price, qty));
+  const addcartItem = (id, name, image, stock, price, qty) => {
+    dispatch(cartUpdate(id, name, image, stock, price, qty));
+    toast("Item added successfully");
   };
   return (
     <>
@@ -99,6 +101,7 @@ function ProductDetail() {
                     disabled={GetThisProduct.stock === 0}
                     onClick={() =>
                       addcartItem(
+                        GetThisProduct.id,
                         GetThisProduct.name,
                         GetThisProduct.image,
                         GetThisProduct.stock,
