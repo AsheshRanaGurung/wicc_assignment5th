@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { cartUpdate, GetThisProduct } from "../../redux/actions/fetchdata";
+import { toast } from "react-toastify";
 
 const CardItems = (props) => {
   const { id, image, stock, name, price, category, date } = props;
@@ -22,8 +23,9 @@ const CardItems = (props) => {
       setItemnum(stock);
     }
   };
-  const addcartItem = (name, image, stock, price, qty) => {
-    dispatch(cartUpdate(name, image, stock, price, qty));
+  const addcartItem = (id, name, image, stock, price, qty) => {
+    dispatch(cartUpdate(id, name, image, stock, price, qty));
+    toast("Item added successfully");
   };
   const sendProductId = (id, image, stock, qty, name, price, category) => {
     dispatch(GetThisProduct(id, image, stock, qty, name, price, category));
@@ -73,7 +75,7 @@ const CardItems = (props) => {
         className="primary-btn"
         disabled={stock === 0}
         onClick={() =>
-          addcartItem(name, image, stock, price.substring(1, 6), itemnum)
+          addcartItem(id, name, image, stock, price.substring(1, 6), itemnum)
         }
       >
         <div className="primary-btn text">Add to Cart</div>

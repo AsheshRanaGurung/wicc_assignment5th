@@ -10,7 +10,6 @@ import {
   FILTERED_DATA_REQUEST,
   FILTERED_DATA_SUCCESS,
 } from "../constants/fetchConstants";
-import { toast } from "react-toastify";
 
 export const fetchData = () => async (dispatch) => {
   try {
@@ -60,10 +59,11 @@ export const filteredData = (filterey) => async (dispatch) => {
 };
 
 export const cartUpdate =
-  (name, image, stock, price, qty) => async (dispatch) => {
+  (id, name, image, stock, price, qty) => async (dispatch) => {
     dispatch({
       type: ADD_TO_CART_SUCCESS,
       payload: {
+        id: id,
         name: name,
         image: image,
         stock: stock,
@@ -71,7 +71,6 @@ export const cartUpdate =
         qty: qty,
       },
     });
-    toast("Item added successfully");
   };
 
 export const cartDelete = (item) => async (dispatch) => {

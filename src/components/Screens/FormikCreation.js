@@ -1,9 +1,10 @@
 import React from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import Loader from "../Loader/Loader";
 // import "../Wicc.scss";
 
-function FormikCreation() {
+function FormikCreation({ history }) {
   const initialValues = { name: "", phone: "", address: "", description: "" };
   const validationSchema = Yup.object().shape({
     name: Yup.string().required(),
@@ -19,9 +20,11 @@ function FormikCreation() {
         enableReinitialize={true}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           console.log(JSON.stringify(values));
+
           setTimeout(() => {
             setSubmitting(false);
             resetForm();
+            history.push("/");
           }, 3000);
         }}
       >
@@ -103,7 +106,7 @@ function FormikCreation() {
                 disabled={isSubmitting === true}
               >
                 <div className="primary-btn text" style={{ color: "white" }}>
-                  Buy
+                  {isSubmitting ? <Loader /> : "Buy"}
                 </div>
               </button>
             </Form>

@@ -46,17 +46,20 @@ const Header = (props) => {
           <Modal.Header closeButton>
             <Modal.Title>Items added</Modal.Title>
           </Modal.Header>
-          {cartItems.map((item) => (
-            <Modal.Body>
+          <Modal.Body>
+            {cartItems.map((item) => (
               <ModalItem
+                key={item.id}
+                id={item.id}
                 image={item.image}
                 name={item.name}
                 price={item.price}
                 qty={item.qty}
+                stock={item.stock}
                 deletelist={() => deletelist(item)}
               />
-            </Modal.Body>
-          ))}
+            ))}
+          </Modal.Body>
 
           <Modal.Footer>
             <div className="Modal-footer">

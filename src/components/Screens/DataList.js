@@ -9,14 +9,14 @@ import useFetchAPIdata from "../CustomHook/useFetchAPIdata";
 
 function DataList(props) {
   const dispatch = useDispatch();
-  // const products = useSelector((state) => state.fetch.products);
+  const products = useSelector((state) => state.fetch.products);
 
   //tried custom hook to fetch data instead of redux ko action
   //redux bata ni chalxa if you un comment line 12.
 
-  const products = useFetchAPIdata(
-    "https://electronic-ecommerce.herokuapp.com/api/v1/product"
-  );
+  // const products = useFetchAPIdata(
+  //   "https://electronic-ecommerce.herokuapp.com/api/v1/product"
+  // );
 
   const [displayproducts, setDisplayproducts] = useState();
 
